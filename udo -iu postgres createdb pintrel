@@ -1,0 +1,29 @@
+[0;1;32m●[0m postgresql.service - PostgreSQL database server
+     Loaded: loaded (]8;;file://manuia-xps159530/usr/lib/systemd/system/postgresql.service\/usr/lib/systemd/system/postgresql.service]8;;\; [0;1;38:5:185mdisabled[0m; preset: [0;1;38:5:185mdisabled[0m)
+     Active: [0;1;32mactive (running)[0m since Wed 2026-04-22 13:47:17 MDT; 23ms ago
+ Invocation: 85b8e6ec81f24294a1b80f80a9a8f118
+       Docs: ]8;;man:postgres(1)\man:postgres(1)]8;;\
+    Process: 9399 ExecStartPre=/usr/bin/postgresql-check-db-dir ${PGROOT}/data (code=exited, status=0/SUCCESS)
+   Main PID: 9403 (postgres)
+      Tasks: 9[0;38:5:245m (limit: 18741)[0m
+     Memory: 30.9M (peak: 31.7M)
+        CPU: 75ms
+     CGroup: /system.slice/postgresql.service
+             ├─[0;38:5:245m9403 /usr/bin/postgres -D /var/lib/postgres/data[0m
+             ├─[0;38:5:245m9405 "postgres: io worker 0"[0m
+             ├─[0;38:5:245m9406 "postgres: io worker 1"[0m
+             ├─[0;38:5:245m9407 "postgres: io worker 2"[0m
+             ├─[0;38:5:245m9408 "postgres: checkpointer "[0m
+             ├─[0;38:5:245m9409 "postgres: background writer "[0m
+             ├─[0;38:5:245m9411 "postgres: walwriter "[0m
+             ├─[0;38:5:245m9412 "postgres: autovacuum launcher "[0m
+             └─[0;38:5:245m9413 "postgres: logical replication launcher "[0m
+
+Apr 22 13:47:17 manuia-xps159530 systemd[1]: Starting PostgreSQL database server...
+Apr 22 13:47:17 manuia-xps159530 postgres[9403]: 2026-04-22 13:47:17.139 MDT [9403] LOG:  starting PostgreSQL 18.3 on x86_64-pc-linux-gnu, compiled by gcc (GCC) 15.2.1 20260209, 64-bit
+Apr 22 13:47:17 manuia-xps159530 postgres[9403]: 2026-04-22 13:47:17.139 MDT [9403] LOG:  listening on IPv6 address "::1", port 5432
+Apr 22 13:47:17 manuia-xps159530 postgres[9403]: 2026-04-22 13:47:17.139 MDT [9403] LOG:  listening on IPv4 address "127.0.0.1", port 5432
+Apr 22 13:47:17 manuia-xps159530 postgres[9403]: 2026-04-22 13:47:17.140 MDT [9403] LOG:  listening on Unix socket "/run/postgresql/.s.PGSQL.5432"
+Apr 22 13:47:17 manuia-xps159530 postgres[9410]: 2026-04-22 13:47:17.144 MDT [9410] LOG:  database system was shut down at 2026-04-22 13:45:30 MDT
+Apr 22 13:47:17 manuia-xps159530 postgres[9403]: 2026-04-22 13:47:17.146 MDT [9403] LOG:  database system is ready to accept connections
+Apr 22 13:47:17 manuia-xps159530 systemd[1]: Started PostgreSQL database server.
