@@ -1,45 +1,78 @@
 <?php
 
 use App\Models\Board;
-use function Livewire\Volt\{state, rules};
+use Illuminate\Support\Facades\Auth;
+use function Livewire\Volt\{state, rules, on};
 
 state([
-    'name'        => '',
+    'showModal' => false,
+    'name' => '',
     'description' => '',
-    'visibility'  => 'public',
+    'visibility' => 'public',
 ]);
 
 rules([
-    'name'        => ['required', 'string', 'max:255'],
-    'description' => ['nullable', 'string', 'max:1000'],
-    'visibility'  => ['required', 'in:public,private'],
+    'name' => ['required', 'string', 'max:255'],
+    'description' => ['nullable', 'string'],
+    'visibility' => ['required', 'in:public,private'],
 ]);
 
-$createBoard = function () {
+on([
+    'open-modal' => fn () => $this->showModal = true,
+
+]);
+
+
+$close = fn () => $this->showModal = false;
+
+$save = function () {
     $validated = $this->validate();
 
-    auth()->user()->boards()->create($validated);
+    Board::create([
+        ...$validated,
+        'user_id' => Auth::id(),
+    ]);
 
-    return $this->redirectRoute('boards.index', navigate: true);
+    $this->reset(['name', 'description']);
+    $this->visibility = 'public';
+    $this->showModal = false;
+
+    // optional: refresh boards without redirect later
+    $this->dispatch('board-created');
 };
 
 ?>
-
 <div>
-    <form wire:submit="createBoard">
-        <input wire:model="name" type="text" placeholder="Board name">
+        <button
+            wire:click="$dispatch('open-modal')"
+            class="bg-black text-white px-4 py-2 rounded-lg font-bold">
+            Create board
+        </button>
 
-        <textarea wire:model="description" placeholder="Description"></textarea>
+@if ($showModal)
+    <div class="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+        <div class="bg-white rounded-2xl p-6 w-full max-w-xl">
+            <div class="flex justify-between mb-4">
+                <h2 class="text-xl font-bold">Create Board</h2>
+                <button wire:click="close">×</button>
+            </div>
 
-        <select wire:model="visibility">
-            <option value="public">Public</option>
-            <option value="private">Private</option>
-        </select>
+            <form wire:submit="save" class="space-y-4">
+                <input wire:model="name" placeholder="Name" class="border p-2 w-full" />
+                @error('name') <p class="text-red-500">{{ $message }}</p> @enderror
 
-        <button type="submit">Create board</button>
-    </form>
+                <textarea wire:model="description" class="border p-2 w-full"></textarea>
 
-    @if (session('success'))
-        <p>{{ session('success') }}</p>
-    @endif
+                <select wire:model="visibility" class="border p-2 w-full">
+                    <option value="public">Public</option>
+                    <option value="private">Private</option>
+                </select>
+
+                <button class="bg-black text-white px-4 py-2 rounded">
+                    Save
+                </button>
+            </form>
+        </div>
+    </div>
+@endif
 </div>
