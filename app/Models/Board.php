@@ -6,5 +6,15 @@ use Illuminate\Database\Eloquent\Model;
 
 class Board extends Model
 {
-    //
+    protected $fillable = [
+        'user_id',
+        'name',
+        'description',
+        'visibility'
+    ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }
